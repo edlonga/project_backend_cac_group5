@@ -1,0 +1,202 @@
+/*Selector universal: con el asterisco */
+*{
+    margin: 0%;
+    padding: 0%;
+    /*si quiero puedo poner un font-family aca, para darle ese estilo a todo el doc*/
+    /*font-family: 'Merriweather';*/
+}
+
+/*header, main, footer*/
+
+/*Este header lo añadio Egly para el font page*/
+
+header {
+    /*background-color: #333;*/
+    /*color: white;*/
+    background: linear-gradient(to bottom, rgb(115, 101, 150), rgb(197, 188, 218));
+    padding: 20px;
+    text-align: center;
+    
+    
+}
+
+/*main{
+    padding-top: 8vw;
+    background: rgb(197, 188, 218);
+}*/
+
+/*Este body lo añadio Egly para el font page*/
+body {
+    background-image: url('../img/font_page/libros_wall.jpg'); /* Agrega la imagen de fondo que desees */
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Arial, sans-serif;*/
+    position: fixed;
+    margin: 0;
+    padding: 0;
+}
+
+footer{
+    background: linear-gradient(to top, rgb(115, 101, 150), rgb(197, 188, 218)); /* por defecto, de arriba a abajo (to bottom) */
+    height: 15vh;
+    text-align: center;
+    border-radius: 0%;
+}
+
+.text-foot{
+    padding-top: 8vh;
+    font-size: 1 vw;
+}
+
+/*dentro del header*/
+/*Brujerias para que el header tenga una parte alineada a la izq, y otra a la der*/
+/*span {
+    display: inline-block;
+    width: 50%
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}*/
+
+
+.container-texto{
+    display: inline-block;
+    margin: 1vw;
+}
+
+.container-librito{
+    display: inline-block;
+    transform: translateY(1vw);
+    width: 4vw;
+}
+
+.casita{
+    width: 3vw;
+}
+
+/*nav > a{
+    text-decoration: none; /*para eliminar el subrayado*/
+    /*color: rgb(51, 22, 105);
+    margin: 1vw;
+    /*algo para que cambien de color los links abiertos?*/
+/*}
+
+/*hover*/
+nav > a:hover{
+    font-weight: bold;
+}
+
+.casita:hover{
+    scale: 1.1;
+}
+
+
+/*dentro del main*/
+section{
+    padding: 2vw;
+}
+
+/*AAAAA POR QUE NO ANDAAAA*/
+.container-s1{
+    display: flex; /*flex: comodo. indico ese display, el gap entre img, que si no entran en la pantalla, vayan abajo, y centrarlas*/
+    gap: 5vw; /*puedo distinguir entre row-gap y column-gap*/
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/*darkmagenta, indigo, slategrey, midnightblue
+
+/*
+.linea-s1{
+    display: inline-block;
+    padding-left: 10vw;
+}
+*/
+
+/*.header-linea{
+    display: inline-block;
+}*/
+
+/*me encantaria la casita y el libro en el violeta de los links*/
+
+header h1 {
+    font-size: 36px;
+    animation: libros-animacion 5s infinite alternate;
+    
+}
+
+header img {
+    font-size: 36px;
+    animation: libros-animacion 5s infinite alternate;
+    
+}
+
+@keyframes libros-animacion {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+nav {
+    /*background-color: #444;*/
+    /*color: white;*/
+    background: linear-gradient(to bottom, rgb(115, 101, 150), rgb(197, 188, 218));
+    text-align: center;
+    padding: 10px;
+}
+
+nav a {
+    /*color: white;*/
+    color: black;
+    text-decoration: none;
+    margin: 10px;
+    font-size: 1.5vw;
+}
+
+/*hover*/
+nav > a:hover{
+    font-weight: bold;
+}
+
+.casita:hover{
+    scale: 1.1;
+}
+
+.contenido {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.seccion-foros, .seccion-videos {
+    margin: 20px 0;
+}
+
+.seccion-foros img, .seccion-videos img {
+    max-width: 100%;
+    width: 5vw;
+    height: auto; /*view height a lo alto*/
+    /*border-radius: 0% 50% 0% 50%;*/
+}
+
+/* Estilos para hacer la página responsive */
+@media screen and (max-width: 600px) {
+    header h1 {
+        font-size: 24px;
+    }
+
+    nav {
+        font-size: 14px;
+    }
+
+    .contenido {
+        padding: 10px;
+    }
+}

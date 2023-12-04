@@ -1,6 +1,6 @@
 #  Importar las herramientas
 # Acceder a las herramientas para crear la app web
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 # Para manipular la DB
 from flask_sqlalchemy import SQLAlchemy 
@@ -9,7 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 # Crear la app
-app = Flask(__name__)
+template_static_folder = "../../frontend/"
+app = Flask(__name__ , template_folder="../../frontend/" , static_folder="../../frontend/static")
+
 
 # permita acceder desde el frontend al backend
 CORS(app)
@@ -38,6 +40,7 @@ class Libro(db.Model):
     isbn = db.Column(db.Integer)
     imagen = db.Column(db.String(400))
 
+    
     def __init__(self,titulo,autor,idioma,edicion,genero,isbn,imagen):   #crea el constructor de la clase
         self.titulo=titulo   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
         self.autor=autor
@@ -54,7 +57,7 @@ class Usuario(db.Model):
     apellido = db.Column(db.String(50))
     nickname = db.Column(db.String(50))
     email = db.Column(db.String(50))
-
+    
     def __init__(self,nombre,apellido,nickname,email):   #crea el constructor de la clase
         self.nombre=nombre   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
         self.apellido=apellido
@@ -67,7 +70,7 @@ class Roles(db.Model):
     id_usuario = db.Column(db.Integer)
     id_libro = db.Column(db.Integer)
     rol_descripcion = db.Column(db.String(20))
-
+    
     def __init__(self,id_usuario,id_libro,rol_descripcion):   #crea el constructor de la clase
         self.id_usuario=id_usuario   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
         self.id_libro=id_libro
@@ -82,39 +85,51 @@ with app.app_context():
 # / es la ruta de inicio
 @app.route("/")
 def index():
-    return f'App Web para registrar nombres de libros, usuarios y roles'
+    #return f'App Web para registrar nombres de libros, usuarios y roles'
+    return render_template("templates/cartelera.html")
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
 # CREAR un registro en la tabla Libro
-@app.route("/registro_libro", methods=['POST']) 
+@app.route("/registro_libro", methods=["GET","POST"]) 
 def registro_libro():
-    # {"titulo": "Harry Potter", ...} -> input tiene el atributo name="titulo"
-    titulo = request.json["titulo"]
-    autor = request.json["autor"]
-    idioma = request.json["idioma"]
-    edicion = request.json["edicion"]
-    genero = request.json["genero"]
-    isbn = request.json["isbn"]
-    imagen = request.json["imagen"]
-    nuevo_registro=Libro(titulo,autor,idioma,edicion,genero,isbn,imagen)
-    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO LIBRO?
-    db.session.commit()
 
-    return "Solicitud de post recibida"
+    if request.method == "GET":
+        return "añadir aquí registro de libros"
+    
+    elif request.method == "POST":
+        titulo = request.json["titulo"]
+        autor = request.json["autor"]
+        idioma = request.json["idioma"]
+        edicion = request.json["edicion"]
+        genero = request.json["genero"]
+        isbn = request.json["isbn"]
+        imagen = request.json["imagen"]
+        nuevo_registro=Libro(titulo,autor,idioma,edicion,genero,isbn,imagen)
+        db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO LIBRO?
+        db.session.commit()
+    # {"titulo": "Harry Potter", ...} -> input tiene el atributo name="titulo"
+        return "Solicitud de post recibida"
+    
 #-------------------------------------------------------------------------------------------------------------#
 # CREAR un registro en la tabla Usuario
-@app.route("/registro_usuario", methods=['POST']) 
+@app.route("/registro_usuario", methods=["GET","POST"]) 
 def registro_usuario():
-    # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
-    nombre = request.json["nombre"]
-    apellido = request.json["apellido"]
-    nickname = request.json["nickname"]
-    email = request.json["email"]
-    nuevo_registro=Usuario(nombre,apellido,nickname,email)
-    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
-    db.session.commit()
+    if request.method == "GET":
+        return render_template("templates/login-mockup.html")
+    
+    elif request.method == "POST":
+        nombre = request.json["nombre"]
+        apellido = request.json["apellido"]
+        nickname = request.json["nickname"]
+        email = request.json["email"]
+        nuevo_registro=Usuario(nombre,apellido,nickname,email)
+        print(nuevo_registro.__dict__)
+        db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
+        db.session.commit()
+        # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
+        return "Solicitud de post recibida"
 
-    return "Solicitud de post recibida"
+
 #-------------------------------------------------------------------------------------------------------------#
 # CREAR un registro en la tabla Rol
 @app.route("/registro_roles", methods=['POST']) 
@@ -123,7 +138,7 @@ def registro_roles():
     id_usuario = request.json["id_usuario"]
     id_libro = request.json["id_libro"]
     rol_descripcion = request.json["rol_descripcion"]
-    nuevo_registro=Rol(id_usuario,id_libro,rol_descripcion)
+    nuevo_registro=Roles(id_usuario,id_libro,rol_descripcion)
     db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO ROL?
     db.session.commit()
 
@@ -281,7 +296,7 @@ def borrar_usuario(id_usuario):
 def borrar_rol(id_rol):
     print(id_rol)
     # Se busca al rol por id en la DB
-    rol = Rol.query.get(id_rol)
+    rol = Roles.query.get(id_rol)
 
     # Se elimina de la DB
     db.session.delete(rol)
@@ -290,6 +305,12 @@ def borrar_rol(id_rol):
     data_serializada = [{"id_rol":rol.id_rol, "id_usuario":rol.id_usuario, "id_libro":rol.id_libro, "rol":rol.rol_descripcion}]
 
     return jsonify(data_serializada)
+
+
+#METODOS DE PRUEBA, solo para previsualizar templates
+@app.route("/a123",methods=["GET"])
+def a123():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

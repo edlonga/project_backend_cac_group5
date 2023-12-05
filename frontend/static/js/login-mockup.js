@@ -8,9 +8,10 @@ function enviarForm() {
         "nickname" : document.getElementById("nickname").value,
         "email" : document.getElementById("email").value,
     })
-
+    
     try {
-        fetch("http://127.0.0.1:5000/registro_usuario", {
+        //remplazar url con el host que se esté usando actualmente
+        fetch("http://lcs1423.pythonanywhere.com/registro_usuario", {
             method: "POST",
             body: form_data,
             headers : {"Content-Type" : "application/json"}

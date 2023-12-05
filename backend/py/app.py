@@ -9,8 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 # Crear la app
-template_static_folder = "../../frontend/"
-app = Flask(__name__ , template_folder="../../frontend/" , static_folder="../../frontend/static")
+
+app = Flask(__name__)
 
 
 # permita acceder desde el frontend al backend
@@ -85,49 +85,42 @@ with app.app_context():
 # / es la ruta de inicio
 @app.route("/")
 def index():
-    #return f'App Web para registrar nombres de libros, usuarios y roles'
-    return render_template("templates/cartelera.html")
+    return f'App Web para registrar nombres de libros, usuarios y roles'
+    
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
 # CREAR un registro en la tabla Libro
-@app.route("/registro_libro", methods=["GET","POST"]) 
+@app.route("/registro_libro", methods=["POST"]) 
 def registro_libro():
 
-    if request.method == "GET":
-        return "añadir aquí registro de libros"
-    
-    elif request.method == "POST":
-        titulo = request.json["titulo"]
-        autor = request.json["autor"]
-        idioma = request.json["idioma"]
-        edicion = request.json["edicion"]
-        genero = request.json["genero"]
-        isbn = request.json["isbn"]
-        imagen = request.json["imagen"]
-        nuevo_registro=Libro(titulo,autor,idioma,edicion,genero,isbn,imagen)
-        db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO LIBRO?
-        db.session.commit()
+    titulo = request.json["titulo"]
+    autor = request.json["autor"]
+    idioma = request.json["idioma"]
+    edicion = request.json["edicion"]
+    genero = request.json["genero"]
+    isbn = request.json["isbn"]
+    imagen = request.json["imagen"]
+    nuevo_registro=Libro(titulo,autor,idioma,edicion,genero,isbn,imagen)
+    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO LIBRO?
+    db.session.commit()
     # {"titulo": "Harry Potter", ...} -> input tiene el atributo name="titulo"
-        return "Solicitud de post recibida"
+    return "Solicitud de post recibida"
     
 #-------------------------------------------------------------------------------------------------------------#
 # CREAR un registro en la tabla Usuario
-@app.route("/registro_usuario", methods=["GET","POST"]) 
+@app.route("/registro_usuario", methods=["POST"]) 
 def registro_usuario():
-    if request.method == "GET":
-        return render_template("templates/login-mockup.html")
-    
-    elif request.method == "POST":
-        nombre = request.json["nombre"]
-        apellido = request.json["apellido"]
-        nickname = request.json["nickname"]
-        email = request.json["email"]
-        nuevo_registro=Usuario(nombre,apellido,nickname,email)
-        print(nuevo_registro.__dict__)
-        db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
-        db.session.commit()
-        # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
-        return "Solicitud de post recibida"
+
+    nombre = request.json["nombre"]
+    apellido = request.json["apellido"]
+    nickname = request.json["nickname"]
+    email = request.json["email"]
+    nuevo_registro=Usuario(nombre,apellido,nickname,email)
+    #print(nuevo_registro.__dict__)
+    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
+    db.session.commit()
+    # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
+    return "Solicitud de post recibida"
 
 
 #-------------------------------------------------------------------------------------------------------------#
@@ -307,10 +300,6 @@ def borrar_rol(id_rol):
     return jsonify(data_serializada)
 
 
-#METODOS DE PRUEBA, solo para previsualizar templates
-@app.route("/a123",methods=["GET"])
-def a123():
-    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

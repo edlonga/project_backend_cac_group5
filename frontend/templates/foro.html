@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/foro.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/ico_book/libro.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="../static/css/foro.css">
+    <link rel="shortcut icon" href="../static/img/ico_book/libro.ico" type="image/x-icon">
     <title>Club Bibliófilos Codo - Foro</title>
 </head>
 <body>
     <header>
         <div class="container-titulo">
-            <h1>Club Bibliófilos Codo</h1><img src="{{ url_for('static', filename='img/whois_img/libro.png') }}" width="40vw" alt="libro">
+            <h1>Club Bibliófilos Codo</h1><img src="../static/img/whois_img/libro.png" width="40vw" alt="libro">
         </div>
         <!-- Menu de navegacion -->
         <nav>
-            <a href="../index.html"><img class="casita" src="{{ url_for('static', filename='img/whois_img/hogar.png') }}" width="30vw" alt="Inicio"></a>
+            <a href="../index.html"><img class="casita" src="../static/img/whois_img/hogar.png" width="30vw" alt="Inicio"></a>
             <a href="whois.html">Quiénes Somos</a>
             <a href="cartelera.html">Cartelera de Novedades</a>
             <a href="foro.html">Foros</a>
@@ -31,7 +31,7 @@
             <ul>
                 <li>
                     <div class="categoria"><a href="#">
-                        <img src="{{ url_for('static', filename='img/ico_writter/logotipo-escritor-clasico.png') }}" alt="Escritores">
+                        <img src="../static/img/ico_writter/logotipo-escritor-clasico.png" alt="Escritores">
                         <p>Autores</p>
                     </a>
                     </div>
@@ -39,7 +39,7 @@
 
                 <li>
                     <div class="categoria"><a href="#">
-                        <img src="{{ url_for('static', filename='img/ico_mes/oct.png') }}" alt="Tema del Mes">
+                        <img src="../static/img/ico_mes/oct.png" alt="Tema del Mes">
                         <p>Temas del Mes</p>
                     </a>
                     </div>
@@ -47,7 +47,7 @@
 
                 <li>
                     <div class="categoria"><a href="#">
-                        <img src="{{ url_for('static', filename='img/ico_inter/intercambio-1.png') }}" alt="Intercambio de Libros">
+                        <img src="../static/img/ico_inter/intercambio-1.png" alt="Intercambio de Libros">
                         <p>Intercambio de Libros</p>
                     </a>
                     </div>
@@ -64,7 +64,7 @@
                 <div class="video-sec">
                     <a href="#">
                         <div class="video-container">
-                            <video src="{{ url_for('static', filename='video/JK Rowling entrevista 60 minutos - Cree JKR en la magia.mp4') }}" controls alt="Video 1"></video>
+                            <video src="../static/video/JK Rowling entrevista 60 minutos - Cree JKR en la magia.mp4" controls alt="Video 1"></video>
                         </div>
                         <p>Entrevistas Autores</p>
                     </a>
@@ -91,13 +91,13 @@
         <div>
             <h4>Club Bibliófilos Codo - Todos los Derechos Reservados Copyright © 2023</h4>
             <p>Seguinos en nuestras redes</p>
-            <a href="http://www.instagram.com" target="_blank"><img src="{{ url_for('static', filename='img/whois_img/instagram.png') }}" alt="instagram"></a>
-            <a href="https://www.twitter.com" target="_blank"><img src="{{ url_for('static', filename='img/whois_img/twitter.png') }}" alt="twitter"></a>
-            <a href="https://www.reddit.com" target="_blank"><img src="{{ url_for('static', filename='img/whois_img/reddit.png') }}" alt="reddit"></a>
+            <a href="http://www.instagram.com" target="_blank"><img src="../static/img/whois_img/instagram.png" alt="instagram"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="../static/img/whois_img/twitter.png" alt="twitter"></a>
+            <a href="https://www.reddit.com" target="_blank"><img src="../static/img/whois_img/reddit.png" alt="reddit"></a>
         </div>
     </footer>
 
-    <script src="{{ url_for('static', filename='js/validacion.js') }}"></script>
+    <script src="../static/js/validacion.js"></script>
 
 </body>
 </html>

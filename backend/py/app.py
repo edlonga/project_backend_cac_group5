@@ -1,6 +1,6 @@
 #  Importar las herramientas
 # Acceder a las herramientas para crear la app web
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 
 # Para manipular la DB
 from flask_sqlalchemy import SQLAlchemy 
@@ -19,8 +19,9 @@ CORS(app)
 
 # Configurar a la app la DB
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://usuario:contraseña@localhost:3306/nombre_de_la_base_de_datos'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:1234@localhost:3306/bibliofilos_db_23529' # ACA VAN A IR LOS DATOS DEL SERVER EN PYTHON ANYWHERE, VER CLASE PYTHON... 9?
+# acomodar user:pass@url dependiendo del deploy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:1234@localhost:3306/bibliofilos_db_23529'
+# ACA VAN A IR LOS DATOS DEL SERVER EN PYTHON ANYWHERE, VER CLASE PYTHON... 9?
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

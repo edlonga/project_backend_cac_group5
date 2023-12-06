@@ -11,7 +11,8 @@ function enviarForm() {
     
     try {
         //remplazar url con el host que se esté usando actualmente
-        fetch("http://lcs1423.pythonanywhere.com/registro_usuario", {
+        //IMPORTANTE, USAR HTTPS
+        fetch("https://lcs1423.pythonanywhere.com/registro_usuario", {
             method: "POST",
             body: form_data,
             headers : {"Content-Type" : "application/json"}

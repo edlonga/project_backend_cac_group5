@@ -19,6 +19,7 @@
                 <a href="whois.html">Quiénes Somos</a>
                 <a href="cartelera.html">Cartelera de Novedades</a>
                 <a href="foro.html">Foros</a>
+                <a href="./templates/login.html">Login</a>
             </nav>
         
     </header>
@@ -69,24 +70,13 @@
                         <label for="apellido">Apellido:</label>
                         <input type="text" name="apellido" id="apellido" placeholder="Ej: Martínez">
                     </div>
+                    <div>
+                        <label for="nickname">Nickname:</label>
+                        <input type="text" name="nickname" id="nickname">
+                    </div>
                     <div class="container-mail">
-                        <label for="mail">Mail:</label>
-                        <input type="email" name="mail" id="mail" placeholder="Ej: mmartinez123@gmail.com">
-                    </div>
-                    <div>
-                        <label for="nac">Fecha de nacimiento:</label>
-                        <input type="date" name="nac" id="nac">
-                    </div>
-                    <div>
-                        <input type="submit" value="Enviar" class="Enviar">
-                        <input type="reset" value="Borrar" class="Borrar">
-                    </div>
-                </form><br><br>
-                <p>Confirmá tu mail ingresando debajo el código que te fue enviado (puede tomar unos instantes). En caso de no recibir el mail, volvé a enviar el formulario o ponete en contacto con nosotros.</p>
-                <form id="formulario-contraseña" onsubmit="return validarFormularioContraseña()">
-                    <div>
-                        <label for="codigo">Código:</label>
-                        <input type="text" name="codigo" id="codigo" placeholder="Ej: 1A2B3C">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" placeholder="Ej: mmartinez123@gmail.com">
                     </div>
                     <div>
                         <input type="submit" value="Enviar" class="Enviar">

@@ -36,6 +36,12 @@ header {
     position: fixed;
     z-index: 1; /*traer al frente*/
 }
+
+.login{
+    text-align:right;
+    font-size: 0.8vw;
+    padding-right: 1vw;
+}
 /* Titulo */
 .container-titulo {
     animation: libros-animacion 5s infinite alternate;

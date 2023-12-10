@@ -179,3 +179,22 @@ img{
     height: 10vh;
 }
 
+/* ---------- Footer ---------- */
+footer{
+    background: linear-gradient(to top, rgb(115, 101, 150), rgb(197, 188, 218)); /* por defecto, de arriba a abajo (to bottom) */
+    padding: 1vw 0vw 1vw 0vw;
+    text-align: center;
+    border-radius: 0%;
+}
+
+footer > h4{
+    font-size: 1.5vw;
+}
+
+footer > p {
+    font-size: 1.5vw;
+}
+
+footer > div > a > img {
+    height: 2vw;
+}

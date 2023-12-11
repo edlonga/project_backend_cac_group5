@@ -4,9 +4,10 @@ function validarFormularioSumate() {
     var apellido = document.getElementById("apellido").value.trim()
     var email = document.getElementById("email").value.trim()
     var nickname = document.getElementById("nickname").value.trim()
+    var contraseña = document.getElementById("contraseña").value.trim()
 
     //Verificar si hay campos vacios
-    if(nombre==="" || apellido==="" || email==="" || nickname===""){
+    if(nombre==="" || apellido==="" || email==="" || nickname===""|| contraseña===""){
         alert("Complete todos los campos del formulario.")
         return false
     }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/ingresar_libro.css">
+    <title>Document</title>
+</head>
+<body>
+    <header id="header">
+        <div class="container-titulo">
+            <h1>Club Bibliófilos Codo</h1><img class="container-librito" src="../img/whois_img/libro.png" width="40vw" alt="libro">
+        </div>
+        <nav id="header_tabla"></nav>
+    </header>
+
+    <main>
+        <section>
+
+            <div class="container-form">
+                <form>
+                   
+                    <div class="entrada">
+                        <label for="id_libro">ID:</label>
+                        <input type="number" name="id_libro" id="id_libro" disabled>
+                    </div>
+            
+                    <div class="entrada">
+                        <label for="titulo">Titulo</label>
+                        <input type="text" name="titulo" id="titulo">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="autor">Autor:</label>
+                        <input type="text" name="autor" id="autor">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="idioma">Idioma:</label>
+                        <input type="text" name="idioma" id="idioma">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="edicion">Edicion:</label>
+                        <input type="text" name="edicion" id="edicion">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="genero">Genero:</label>
+                        <input type="text" name="genero" id="genero">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="isbn">Isbn:</label>
+                        <input type="number" name="isbn" id="isbn">
+                    </div>
+
+                    <div class="entrada">
+                        <label for="imagen">Imagen:</label>
+                        <input type="text" name="imagen" id="imagen">
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="colaborador">Colaborador:</label>
+                        <input type="number" name="colaborador" id="colaborador">
+                    </div>
+
+                    
+                    <button class="modificar" type="button" onclick="modificar()">Modificar</button>
+                </form>
+          
+          
+              </div>
+
+        </section>
+    </main>
+
+    
+    <footer>
+        <div>
+            <h4>Club Bibliófilos Codo - Todos los Derechos Reservados Copyright © 2023</h4>
+            <p>Seguinos en nuestras redes</p>
+            <a href="http://www.instagram.com" target="_blank"><img src="../img/whois_img/instagram.png" alt="instagram"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="../img/whois_img/twitter.png" alt="twitter"></a>
+            <a href="https://www.reddit.com" target="_blank"><img src="../img/whois_img/reddit.png" alt="reddit"></a>
+        </div>
+    </footer>
+
+    <script src="../js/editar_libro.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/dato_editar.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/tabla_libro2.css">
+    <link rel="shortcut icon" href="../img/ico_book/libro.ico" type="image/x-icon">
+    <title>Tabla Libros</title>
+</head>
+
+<body>
+
+    <header>
+        <div class="container-titulo">
+            <h1>Club Bibliófilos Codo</h1><img class="container-librito" src="../img/whois_img/libro.png" width="40vw" alt="libro">
+        </div>
+        <nav id="header_usuario"></nav>
+    </header>
+
+    <main>
+
+        <section class="container">
+            <div id="app" >
+
+                <!-- Botón Nuevo -->
+                <a class="nuevo" href="ingresar_usuario.html">Nuevo</a>
+
+                <section v-if="error">Lo sentimos se produjo un error</section>
+                <section v-else>
+                    <section v-if="cargando">
+                        <p>Cargando .....</p>
+
+                    </section>
+
+                    <section v-else>
+                        
+                        <div >
+                            <table class="tabla">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Correo</th>
+                                        <th>Nickname</th>
+                                        <th>contrasena</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                    <tr v-for="usuario in ver_usuario">
+                                        <td >{{libro.id_usuario}}</td>
+                                        <td>{{libro.nombre}}</td>
+                                        <td>{{libro.apellido}}</td>
+                                        <td>{{libro.correo}}</td>
+                                        <td>{{libro.nickname}}</td>
+                                        <td>{{libro.contrasena}}</td>
+                                        
+                                        
+                                        <td>
+                                            <img class="imagen-tabla" :src="libro.imagen" alt="">
+                                        </td>
+                                        <td>{{libro.colaborador}}</td>
+                                        <td>
+                                            <button type="button"  v-on:click="eliminar(usuario.id_usuario)">Eliminar</button>
+                                        </td>
+                                        <td>
+                                            <a class="boton" :href="'editar_libro.html?id_libro='+ libro.id_libro+'&titulo=' +libro.titulo+ '&autor='+libro.autor+'&idioma='+libro.idioma+'&edicion='+libro.edicion+'&genero='+libro.genero+'&isbn='+libro.isbn+'&colaborador='+libro.colaborador + '&imagen='+libro.imagen">Editar</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </section>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div>
+            <h4>Club Bibliófilos Codo - Todos los Derechos Reservados Copyright © 2023</h4>
+            <p>Seguinos en nuestras redes</p>
+            <a href="http://www.instagram.com" target="_blank"><img src="../img/whois_img/instagram.png" alt="instagram"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="../img/whois_img/twitter.png" alt="twitter"></a>
+            <a href="https://www.reddit.com" target="_blank"><img src="../img/whois_img/reddit.png" alt="reddit"></a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script src="../js/tabla_usuario.js"></script>
+    <script src="../js/header_usuario.js"></script>
+    
+</body>
+</html>

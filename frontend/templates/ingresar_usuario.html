@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/ingresar_libro.css">
+    <title>Registrar</title>
+</head>
+
+<body>
+
+    <header>
+        <div class="container-titulo">
+            <h1>Club Bibliófilos Codo</h1><img class="container-librito" src="../img/whois_img/libro.png" width="40vw" alt="libro">
+        </div>
+        <nav id="header_usuario">
+            
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+            <div class="container-form">
+
+                <form action="">
+                    <div>
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre" placeholder="Ej: María">
+                    </div>
+                    <div>
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" name="apellido" id="apellido" placeholder="Ej: Martínez">
+                    </div>
+                    <div>
+                        <label for="nickname">Nickname:</label>
+                        <input type="text" name="nickname" id="nickname">
+                    </div>
+                    <div>
+                        <label for="contraseña">Contraseña:</label>
+                        <input type="text" name="contraseña" id="contraseña">
+                    </div>
+                    <div class="container-mail">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" placeholder="Ej: mmartinez123@gmail.com">
+                    </div>
+                    
+                    <!--<div>
+                        <input type="submit" value="Enviar" class="Enviar">
+                        <input type="reset" value="Borrar" class="Borrar">
+                    </div>-->
+
+                    <div class="entrada">
+                        <button class="modificar" type="button" onclick="guardar()">Guardar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div>
+            <h4>Club Bibliófilos Codo - Todos los Derechos Reservados Copyright © 2023</h4>
+            <p>Seguinos en nuestras redes</p>
+            <a href="http://www.instagram.com" target="_blank"><img src="../img/whois_img/instagram.png" alt="instagram"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="../img/whois_img/twitter.png" alt="twitter"></a>
+            <a href="https://www.reddit.com" target="_blank"><img src="../img/whois_img/reddit.png" alt="reddit"></a>
+        </div>
+    </footer>
+
+    <script src="../js/ingresar_usuario.js"></script>
+    <script src="../js/header_usuario.js"></script>
+</body>
+
+</html>

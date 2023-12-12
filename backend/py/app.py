@@ -1,133 +1,123 @@
-#  Importar las herramientas
-# Acceder a las herramientas para crear la app web
+
+# A very simple Flask Hello World app for you to get started with...
+
 from flask import Flask, request, jsonify
+import urllib.parse
 
-# Para manipular la DB
-from flask_sqlalchemy import SQLAlchemy 
+# Módulo sqlAlchemy es para que me permite acceder y manipular la DB
+from flask_sqlalchemy import SQLAlchemy
 
-# Módulo cors es para que me permita acceder desde el frontend al backend
+# Módulo sqlAlchemy es para que me permite acceder y manipular la DB
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+
+# Módulo cors es para que me permite acceder desde el frontend al backend
 from flask_cors import CORS
 
-# Crear la app
+# Crea el objeto app
 app = Flask(__name__)
 
-# permita acceder desde el frontend al backend
+# permite acceder desde el frontend al backend
 CORS(app)
 
+# acjustar user:pass@url dependiendo del deploy
+# contraseña => URL encode, ya que contiene @ que tambien se usa para señalizar URL del server
+_pass = urllib.parse.quote("J3r3m!@s33.3")
 
-# Configurar a la app la DB
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://usuario:contraseña@localhost:3306/nombre_de_la_base_de_datos'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:1234@localhost:3306/db_23529' # ACA VAN A IR LOS DATOS DEL SERVER EN PYTHON ANYWHERE, VER CLASE PYTHON... 9?
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+mysqlconnector://bibliofilos23529:{_pass}@bibliofilos23529.mysql.pythonanywhere-services.com/bibliofilos23529$default"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Crear un objeto db, para informar a la app que se trabajará con sqlalchemy
+# Crea un objeto db, para informar a la app que se trabajará con sqlalchemy
 db = SQLAlchemy(app)
 
+# Definir tabla Usuario
+class Usuario(db.Model):
+    id_usuario = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50))
+    apellido = db.Column(db.String(50))
+    nickname = db.Column(db.String(50))
+    contrasena = db.Column(db.String(50))
+    email = db.Column(db.String(50))
+ #  libros = relationship('Libro', backref='colaborador')
+
+    def __init__(self,nombre,apellido,nickname,contrasena,email):   #crea el constructor de la clase
+        self.nombre=nombre
+        self.apellido=apellido
+        self.nickname=nickname
+        self.contrasena=contrasena
+        self.email=email
 #-------------------------------------------------------------------------------------------------------------#
-#-------------------------------------------------------------------------------------------------------------#
-# Definir la tabla 1
+# Definir tabla Libro
 class Libro(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id_libro = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(50))
     autor = db.Column(db.String(50))
     idioma = db.Column(db.String(50))
     edicion = db.Column(db.String(50))
-    categoria = db.Column(db.String(50))
+    genero = db.Column(db.String(50))
     isbn = db.Column(db.Integer)
     imagen = db.Column(db.String(400))
+    colaborador = db.Column(db.Integer, ForeignKey('usuario.id_usuario'))
 
-    def __init__(self,titulo,autor,idioma,edicion,categoria,isbn,imagen):   #crea el constructor de la clase
-        self.titulo=titulo   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
+    def __init__(self,titulo,autor,idioma,edicion,genero,isbn,imagen,colaborador):   #crea el constructor de la clase
+        self.titulo=titulo
         self.autor=autor
         self.idioma=idioma
         self.edicion=edicion
-        self.categoria=categoria
+        self.genero=genero
         self.isbn=isbn
         self.imagen=imagen
-#-------------------------------------------------------------------------------------------------------------#
-# Definir la tabla 2
-class Usuario(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(50))
-    apellido = db.Column(db.String(50))
-    nickname = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-
-    def __init__(self,nombre,apellido,nickname,email):   #crea el constructor de la clase
-        self.nombre=nombre   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
-        self.apellido=apellido
-        self.nickname=nickname
-        self.email=email
-#-------------------------------------------------------------------------------------------------------------#
-# Definir la tabla 3
-class Rol(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    id_usuario = db.Column(db.Integer)
-    id_libro = db.Column(db.Integer)
-    rol = db.Column(db.String(20))
-
-    def __init__(self,id_usuario,id_libro,rol):   #crea el constructor de la clase
-        self.id_usuario=id_usuario   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
-        self.id_libro=id_libro
-        self.rol=rol
+        self.colaborador=colaborador
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
-# 8. Crear las tablas al ejecutarse la app
+# Crea las tablas al ejecutarse la app
 with app.app_context():
     db.create_all()
 
-# Crear ruta de acceso
-# / es la ruta de inicio
+#rutas de acceso
+# / Pagina de inicio
 @app.route("/")
 def index():
-    return f'App Web para registrar nombres de libros, usuarios y roles'
+    return f'App Web para registrar y compartir libros entre bibliofilos.'
+
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
-# CREAR un registro en la tabla Libro
-@app.route("/registro_libro", methods=['POST']) 
+# CREA un registro en la tabla Libro
+@app.route("/registro_libro", methods=["POST"])
 def registro_libro():
-    # {"titulo": "Harry Potter", ...} -> input tiene el atributo name="titulo"
+
     titulo = request.json["titulo"]
     autor = request.json["autor"]
     idioma = request.json["idioma"]
     edicion = request.json["edicion"]
-    categoria = request.json["categeoria"]
+    genero = request.json["genero"]
     isbn = request.json["isbn"]
     imagen = request.json["imagen"]
-    nuevo_registro=Libro(titulo,autor,idioma,edicion,categoria,isbn,imagen)
-    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO LIBRO?
+    colaborador = request.json["imagen"]
+    nuevo_registro=Libro(titulo,autor,idioma,edicion,genero,isbn,imagen,colaborador)
+    db.session.add(nuevo_registro)
     db.session.commit()
-
+    # {"titulo": "Harry Potter", ...} -> input tiene el atributo name="titulo"
     return "Solicitud de post recibida"
+
 #-------------------------------------------------------------------------------------------------------------#
-# CREAR un registro en la tabla Usuario
-@app.route("/registro_usuario", methods=['POST']) 
+# CREA un registro en la tabla Usuario
+@app.route("/registro_usuario", methods=["POST"])
 def registro_usuario():
-    # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
+
     nombre = request.json["nombre"]
     apellido = request.json["apellido"]
     nickname = request.json["nickname"]
+    contrasena = request.json["contrasena"]
     email = request.json["email"]
-    nuevo_registro=Usuario(nombre,apellido,nickname,email)
-    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
+    nuevo_registro=Usuario(nombre,apellido,nickname,contrasena,email)
+    #print(nuevo_registro.__dict__)
+    db.session.add(nuevo_registro)
     db.session.commit()
-
+    # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
     return "Solicitud de post recibida"
-#-------------------------------------------------------------------------------------------------------------#
-# CREAR un registro en la tabla Rol
-@app.route("/registro_rol", methods=['POST']) 
-def registro_rol():
-    # {"id_usuario": "25", ...} -> input tiene el atributo name="id_usuario"
-    id_usuario = request.json["id_usuario"]
-    id_libro = request.json["id_libro"]
-    rol = request.json["rol"]
-    nuevo_registro=Rol(id_usuario,id_libro,rol)
-    db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO ROL?
-    db.session.commit()
 
-    return "Solicitud de post recibida"
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
 # RETORNAR todos los registros de libros en un Json
@@ -139,9 +129,9 @@ def ver_libro():
 
     # Lista de diccionarios
     data_serializada = []
-    
+
     for objeto in all_registros:
-        data_serializada.append({"id":objeto.id, "titulo":objeto.titulo, "autor":objeto.autor, "idioma":objeto.idioma, "edicion":objeto.edicion, "categoria":objeto.categoria, "isbn":objeto.isbn, "imagen":objeto.imagen})
+        data_serializada.append({"id_libro":objeto.id_libro, "titulo":objeto.titulo, "autor":objeto.autor, "idioma":objeto.idioma, "edicion":objeto.edicion, "genero":objeto.genero, "isbn":objeto.isbn, "imagen":objeto.imagen, "colaborador":objeto.colaborador})
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
@@ -154,142 +144,101 @@ def ver_usuario():
 
     # Lista de diccionarios
     data_serializada = []
-    
-    for objeto in all_registros:
-        data_serializada.append({"id":objeto.id, "nombre":objeto.nombre, "apellido":objeto.apellido, "nickname":objeto.nickname, "email":objeto.email})
 
-    return jsonify(data_serializada)
-#-------------------------------------------------------------------------------------------------------------#
-# RETORNAR todos los registros de roles en un Json
-@app.route("/ver_rol",  methods=['GET'])
-def ver_rol():
-    # Consultar en la tabla todos los registros
-    # all_registros -> lista de objetos
-    all_registros = Rol.query.all()
-
-    # Lista de diccionarios
-    data_serializada = []
-    
     for objeto in all_registros:
-        data_serializada.append({"id":objeto.id, "id_usuario":objeto.id_usuario, "id_libro":objeto.id_libro, "rol":objeto.rol})
+        data_serializada.append({"id_usuario":objeto.id_usuario, "nombre":objeto.nombre, "apellido":objeto.apellido, "nickname":objeto.nickname,"contrasena":objeto.contrasena, "email":objeto.email})
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
 # MODIFICAR un registro de libros
-@app.route('/update_libro/<id>', methods=['PUT'])
-def update_libro(id):
+@app.route('/update_libro/<id_libro>', methods=['PUT'])
+def update_libro(id_libro):
     # Buscar el registro a modificar en la tabla por su id
-    libro = Libro.query.get(id)
+    libro = Libro.query.get(id_libro)
 
     # {"titulo": "Harry Potter"} -> input tiene el atributo name="titulo"
     titulo = request.json["titulo"]
     autor = request.json["autor"]
     idioma = request.json["idioma"]
     edicion = request.json["edicion"]
-    categoria = request.json["categeoria"]
+    genero = request.json["genero"]
     isbn = request.json["isbn"]
     imagen = request.json["imagen"]
+    colaborador = request.json["colaborador"]
 
     libro.titulo=titulo
     libro.autor=autor
     libro.idioma=idioma
     libro.edicion=edicion
-    libro.categoria=categoria
+    libro.genero=genero
     libro.isbn=isbn
     libro.imagen=imagen
+    libro.colaborador=colaborador
     db.session.commit()
 
-    data_serializada = [{"id":libro.id, "titulo":libro.titulo, "autor":libro.autor, "idioma":libro.idioma, "edicion":libro.edicion, "categoria":libro.categoria, "isbn":libro.isbn, "imagen":libro.imagen}]
-    
+    data_serializada = [{"id_libro":libro.id_libro, "titulo":libro.titulo, "autor":libro.autor, "idioma":libro.idioma, "edicion":libro.edicion, "genero":libro.genero, "isbn":libro.isbn, "imagen":libro.imagen, "colaborador":libro.colaborador}]
+
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
 # MODIFICAR un registro de usuarios
-@app.route('/update_usuario/<id>', methods=['PUT'])
-def update_usuario(id):
+@app.route('/update_usuario/<id_usuario>', methods=['PUT'])
+def update_usuario(id_usuario):
     # Buscar el registro a modificar en la tabla por su id
-    usuario = Usuario.query.get(id)
+    usuario = Usuario.query.get(id_usuario)
 
     # {"nombre": "Felipe"} -> input tiene el atributo name="nombre"
     nombre = request.json["nombre"]
     apellido = request.json["apellido"]
     nickname = request.json["nickname"]
+    contrasena = request.json["contrasena"]
     email = request.json["email"]
 
     usuario.nombre=nombre
     usuario.apellido=apellido
     usuario.nickname=nickname
+    usuario.contrasena=contrasena
     usuario.email=email
     db.session.commit()
 
-    data_serializada = [{"id":usuario.id, "nombre":usuario.nombre, "apellido":usuario.apellido, "nickname":usuario.nickname, "email":usuario.email}]
-    
+    data_serializada = [{"id_usuario":usuario.id_usuario, "nombre":usuario.nombre, "apellido":usuario.apellido, "nickname":usuario.nickname,"contrasena":usuario.contrasena, "email":usuario.email}]
+
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
-# MODIFICAR un registro de roles
-@app.route('/update_rol/<id>', methods=['PUT'])
-def update_rol(id):
-    # Buscar el registro a modificar en la tabla por su id
-    rol = Rol.query.get(id)
-
-    # {"id_usuario": "25"} -> input tiene el atributo name="id_usuario"
-    id_usuario = request.json["id_usuario"]
-    id_libro = request.json["id_libro"]
-    rol = request.json["rol"]
-
-    rol.id_usuario=id_usuario
-    rol.id_libro=id_libro
-    rol.rol=rol
-    db.session.commit()
-
-    data_serializada = [{"id":rol.id, "id_usuario":rol.id_usuario, "id_libro":rol.id_libro, "rol":rol.rol}]
-    
-    return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------##-------------------------------------------------------------------------------------------------------------#
 # BORRAR un registro de libros
-@app.route('/borrar_libro/<id>', methods=['DELETE'])
-def borrar_libro(id):
-    print(id)
+@app.route('/borrar_libro/<id_libro>', methods=['DELETE'])
+def borrar_libro(id_libro):
+    print(id_libro)
     # Se busca al libro por id en la DB
-    libro = Libro.query.get(id)
+    libro = Libro.query.get(id_libro)
 
     # Se elimina de la DB
     db.session.delete(libro)
     db.session.commit()
 
-    data_serializada = [{"id":libro.id, "titulo":libro.titulo, "autor":libro.autor, "idioma":libro.idioma, "edicion":libro.edicion, "categoria":libro.categoria, "isbn":libro.isbn, "imagen":libro.imagen}]
+    data_serializada = [{"id_libro":libro.id_libro, "titulo":libro.titulo, "autor":libro.autor, "idioma":libro.idioma, "edicion":libro.edicion, "genero":libro.genero, "isbn":libro.isbn, "imagen":libro.imagen, "colaborador":libro.colaborador}]
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
 # BORRAR un registro de usuarios
-@app.route('/borrar_usuario/<id>', methods=['DELETE'])
-def borrar_usuario(id):
-    print(id)
+@app.route('/borrar_usuario/<id_usuario>', methods=['DELETE'])
+def borrar_usuario(id_usuario):
+    print(id_usuario)
     # Se busca al usuario por id en la DB
-    usuario = Usuario.query.get(id)
+    usuario = Usuario.query.get(id_usuario)
 
     # Se elimina de la DB
     db.session.delete(usuario)
     db.session.commit()
 
-    data_serializada = [{"id":usuario.id, "nombre":usuario.nombre, "apellido":usuario.apellido, "nickname":usuario.nickname, "email":usuario.email}]
+    data_serializada = [{"id_usuario":usuario.id_usuario, "nombre":usuario.nombre, "apellido":usuario.apellido, "nickname":usuario.nickname,"contrasena":usuario.contrasena, "email":usuario.email}]
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
-# BORRAR un registro de roles
-@app.route('/borrar_rol/<id>', methods=['DELETE'])
-def borrar_rol(id):
-    print(id)
-    # Se busca al rol por id en la DB
-    rol = Rol.query.get(id)
-
-    # Se elimina de la DB
-    db.session.delete(rol)
-    db.session.commit()
-
-    data_serializada = [{"id":rol.id, "id_usuario":rol.id_usuario, "id_libro":rol.id_libro, "rol":rol.rol}]
-
-    return jsonify(data_serializada)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+

@@ -1,0 +1,282 @@
+/* Selector universal: con el asterisco */
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+/*Fonts LETRA*/
+@font-face {
+    font-family: "Montserrat";
+    src: url('../fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf');
+}
+/* ---------- Body ---------- */
+body {
+    background-image: url('../img/font_page/libros_wall.jpg'); /* Agrega la imagen de fondo que desees */
+    background-repeat: repeat;
+    background-size: 50% 50%;
+    font-family: "Montserrat";
+    src: url('../fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf');
+    /*Le doy transparencia al fondo*/
+    &::before {
+        content: '';
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(197, 188, 218, 0.7); /*rgba(255, 255, 255, 0.7);*/ /* Black with 50% opacity */
+        z-index: -1;
+      }
+}
+nav {
+    background: linear-gradient(to bottom, rgb(115, 101, 150), rgb(197, 188, 218));
+    text-align: center;
+    vertical-align: middle;  
+}
+
+nav > a {
+    color: black;
+    text-decoration: none;
+    margin: 2vw;
+    font-size: 2vw; /*quiza lo achique*/
+}
+/*hover*/
+nav > a:hover{
+    font-weight: bold;
+}
+.container-form{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* ---------- Header ----------*/
+header {
+    background: linear-gradient(to bottom, rgb(115, 101, 150), rgb(197, 188, 218));
+    padding-top: 1vw;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    z-index: 1; /*traer al frente*/
+}
+/* Titulo */
+.container-titulo {
+    animation: libros-animacion 5s infinite alternate;
+}
+
+.container-titulo > h1 {
+    font-size: 2.5vw;
+}
+
+.container-titulo > img {
+    width: 4vw;
+}
+
+@keyframes libros-animacion {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+
+/* Para que el fixed header no me tape */
+main {
+    padding-top: 4vw;
+    height: 100vh;
+
+}
+
+form{
+    background-color: rgb(115, 101, 150);
+    width: 30vw;
+    height: 60vh;
+    border-radius: 1vw;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+
+.entrada{
+    margin-bottom: 1vh;
+    display: flex;
+    flex-direction:row;
+}
+input ,textarea{
+    background-color: rgb(195, 177, 241);
+    border-radius: 10px;
+    padding: 1.5%;
+}
+label{
+    font-size: 1.7vw;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: aliceblue;
+    display: inline-block;
+    width: 10.5vw;
+}
+
+button {
+    padding: 0.2vw 0.3vh;
+    font-size: 1.6vw;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #ff9999;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #ff6666;
+}
+
+.modificar{
+    color: #f2f2f2;
+    margin-right: 2vh;
+    background-color: #ff9999; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 0.5vw 3vh; /* Relleno interno */
+    border: none; /* Quita el borde */
+    border-radius: 2vw; /* Borde redondeado */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Quita el subrayado predeterminado */
+    display: inline-block; /* Mostrar como bloque en línea */
+    font-size: 1vw; /* Tamaño de fuente */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+@media screen and (max-width:768px){
+    form{
+        background-color: #001F3F;
+        width: 50vw;
+        height: 50vh;
+        border-radius: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    label{
+        font-size: 4vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: aliceblue;
+    }
+
+    a{
+        font-size: 4vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        text-decoration: none;
+        color: aliceblue;
+        
+    }
+
+    .modificar{
+        color: #f2f2f2;
+        margin-right: 2vh;
+        background-color: #ff9999; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 0.5vw 3vh; /* Relleno interno */
+        border: none; /* Quita el borde */
+        border-radius: 2vw; /* Borde redondeado */
+        text-align: center; /* Alineación del texto */
+        text-decoration: none; /* Quita el subrayado predeterminado */
+        display: inline-block; /* Mostrar como bloque en línea */
+        font-size: 3vw; /* Tamaño de fuente */
+        cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    }
+}
+
+@media screen and (max-width:425px){
+    form{
+        background-color: #001F3F;
+        width: 80vw;
+        height: 40vh;
+        border-radius: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    label{
+        font-size: 6vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: aliceblue;
+    }
+
+    a{
+        font-size: 6vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        text-decoration: none;
+        color: aliceblue;
+        
+    }
+
+    .modificar{
+        color: #f2f2f2;
+        margin-right: 2vh;
+        background-color: #ff9999; /* Color de fondo */
+        color: white; /* Color del texto */
+        padding: 0.5vw 3vh; /* Relleno interno */
+        border: none; /* Quita el borde */
+        border-radius: 2vw; /* Borde redondeado */
+        text-align: center; /* Alineación del texto */
+        text-decoration: none; /* Quita el subrayado predeterminado */
+        display: inline-block; /* Mostrar como bloque en línea */
+        font-size: 5vw; /* Tamaño de fuente */
+        cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    }
+}
+
+
+@media screen and (max-width:320px){
+    form{
+        background-color: #001F3F;
+        width: 80vw;
+        height: 50vh;
+        border-radius: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    label{
+        font-size: 6vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: aliceblue;
+    }
+
+    a{
+        font-size: 6vw;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        text-decoration: none;
+        color: aliceblue;
+        
+    }
+}
+
+/* ---------- Footer ---------- */
+footer{
+    background: linear-gradient(to top, rgb(115, 101, 150), rgb(197, 188, 218)); /* por defecto, de arriba a abajo (to bottom) */
+    padding: 1vw 0vw 1vw 0vw;
+    text-align: center;
+    border-radius: 0%;
+}
+
+footer > h4{
+    font-size: 1.5vw;
+}
+
+footer > p {
+    font-size: 1.5vw;
+}
+
+footer > div > a > img {
+    height: 2vw;
+}

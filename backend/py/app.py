@@ -1,12 +1,21 @@
 #  Importar las herramientas
 # Acceder a las herramientas para crear la app web
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 
 # Para manipular la DB
 from flask_sqlalchemy import SQLAlchemy 
 
 # Módulo cors es para que me permita acceder desde el frontend al backend
 from flask_cors import CORS
+
+from flask_cors import cross_origin
+
+# formateo de credenciales
+import urllib.parse
+
+# para salteo de credenciales sensibles
+import hashlib
+
 
 # Crear la app
 
@@ -21,7 +30,8 @@ CORS(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://usuario:contraseña@localhost:3306/nombre_de_la_base_de_datos'
 
 # acomodar user:pass@url dependiendo del deploy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:1234@localhost:3306/bibliofilos_db_23529'
+_user , _pass = [urllib.parse.quote(x) for x in ["root","1234"]]
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{_user}:{_pass}@localhost:3306/bibliofilos_db_23529'
 
 # ACA VAN A IR LOS DATOS DEL SERVER EN PYTHON ANYWHERE, VER CLASE PYTHON... 9?
 
@@ -36,14 +46,16 @@ class Usuario(db.Model):
     id_usuario = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50))
     apellido = db.Column(db.String(50))
-    nickname = db.Column(db.String(50))
+    nickname = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(50))
+    passkey = db.Column(db.String(70))
     
-    def __init__(self,nombre,apellido,nickname,email):   #crea el constructor de la clase
+    def __init__(self,nombre,apellido,nickname,email,passkey):   #crea el constructor de la clase
         self.nombre=nombre   # no hace falta el id porque lo crea sola mysql por ser auto_incremento
         self.apellido=apellido
         self.nickname=nickname
         self.email=email
+        self.passkey=passkey
 #-------------------------------------------------------------------------------------------------------------#
 # Definir tabla Libro
 class Libro(db.Model):
@@ -67,6 +79,9 @@ class Libro(db.Model):
         self.imagen=imagen
         self.colaborador=colaborador
 #-------------------------------------------------------------------------------------------------------------#
+
+def shaDigest(string: str) -> str:
+    return hashlib.sha256(   str.encode(string)   ).hexdigest()
 
 #-------------------------------------------------------------------------------------------------------------#
 # 8. Crear las tablas al ejecutarse la app
@@ -108,12 +123,14 @@ def registro_usuario():
     apellido = request.json["apellido"]
     nickname = request.json["nickname"]
     email = request.json["email"]
-    nuevo_registro=Usuario(nombre,apellido,nickname,email)
+    passkey = shaDigest(request.json["passkey"])
+    nuevo_registro=Usuario(nombre,apellido,nickname,email,passkey)
     #print(nuevo_registro.__dict__)
     db.session.add(nuevo_registro) #COMO SE A QUE TABLA AGREGARLO? HAY QUE ACLARARLO EN ALGUN LADO, O SABE SOLO POR SER UN OBJETO USUARIO?
     db.session.commit()
     # {"nombre": "Felipe", ...} -> input tiene el atributo name="nombre"
-    return "Solicitud de post recibida"
+    #return "Solicitud de post recibida"
+    return passkey
 
 #-------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
@@ -141,9 +158,13 @@ def ver_usuario():
 
     # Lista de diccionarios
     data_serializada = []
-    
+
+    # hacer copia del objeto, extirpar instanceState de sqlalchemy ya que no es serializable, mostrar dict
     for objeto in all_registros:
-        data_serializada.append({"id_usuario":objeto.id_usuario, "nombre":objeto.nombre, "apellido":objeto.apellido, "nickname":objeto.nickname, "email":objeto.email})
+        obj_copy = objeto.__dict__
+        del obj_copy["_sa_instance_state"]
+        data_serializada.append(obj_copy)
+        #data_serializada.append({"id_usuario":objeto.id_usuario, "nombre":objeto.nombre, "apellido":objeto.apellido, "nickname":objeto.nickname, "email":objeto.email, "passkey":objeto.passkey})
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
@@ -231,6 +252,20 @@ def borrar_usuario(id_usuario):
 
     return jsonify(data_serializada)
 #-------------------------------------------------------------------------------------------------------------#
+# verificar credenciales de login
+@app.route("/login_usuario", methods="POST")
+@cross_origin()
+def login_usuario():
+    usuario = request.json["nickname"]
+    passkey = shaDigest(request.json["passkey"])
+
+    if db.session.query(Usuario).where(Usuario.nickname==usuario).one().passkey == passkey:
+        pass # REDIRECCIONAR A LIBROS !IMPORTANTE!!!!
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
